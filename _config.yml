@@ -7,12 +7,12 @@ title: leolinf 的博客
 subtitle: 人生苦短我用 py
 description: 记录一些自己发现的，和对代码的理解
 author: linfan
-language: zh-CN
-timezone: 
+language: zh-Hans
+timezone: Asia/Shanghai
 
 # URL
 ## If your site is put in a subdirectory, set url as 'http://yoursite.com/child' and root as '/child/'
-url: http://yoursite.com
+url: https://clubpy.top
 root: /
 permalink: :year/:month/:day/:title/
 permalink_defaults:
@@ -79,3 +79,11 @@ theme: next
 ## Docs: https://hexo.io/docs/deployment.html
 deploy:
   type:
+
+feed:
+  type: atom
+  path: atom.xml
+  limit: 20
+
+sitemap:
+  path: sitemap.xml
