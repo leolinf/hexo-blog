@@ -1,4 +1,11 @@
-# 				thrift 深入理解
+---
+title: thrift 深入理解
+date: 2018-12-29 16:14:47
+tags: thrift
+categories: 技术
+comment: true
+---
+
 
 ### 简介
 
