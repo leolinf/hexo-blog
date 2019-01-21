@@ -11,7 +11,7 @@ comment: true
 
 RPC（Remote Procedure Call Protocol），在各大互联网公司中被广泛使用，如阿里巴巴的hsf、dubbo（开源）、Facebook的thrift（开源）、Google grpc（开源）、Twitter的finagle等。
 
-![image-20181221150904725](/Users/fanlin/Library/Application Support/typora-user-images/image-20181221150904725.png)
+![image-20181221150904725.png](https://github.com/leolinf/hexo-blog/blob/master/source/_posts/images/image-20181221150904725.png?raw=true)
 
 ### 基础架构
 
@@ -19,7 +19,7 @@ RPC（Remote Procedure Call Protocol），在各大互联网公司中被广泛�
 
 如上图所示是thrift的协议栈整体的架构，thrift是一个客户端和服务器端的架构体系（c/s），在最上层是用户自行实现的业务逻辑代码。第二层是由thrift编译器自动生成的代码，主要用于结构化数据的解析，发送和接收。TServer主要任务是高效的接受客户端请求，并将请求转发给Processor处理。Processor负责对客户端的请求做出响应，包括RPC请求转发，调用参数解析和用户逻辑调用，返回值写回等处理。从TProtocol以下部分是thirft的传输协议和底层I/O通信。TProtocol是用于数据类型解析的，将结构化数据转化为字节流给TTransport进行传输。TTransport是与底层数据传输密切相关的传输层，负责以字节流方式接收和发送消息体，不关注是什么数据类型。底层IO负责实际的数据传输，包括socket、文件和压缩数据流等。
 
-![image-20181217171353673](/Users/fanlin/Library/Application Support/typora-user-images/image-20181217171353673.png)
+![image-20181217171353673.png](https://github.com/leolinf/hexo-blog/blob/master/source/_posts/images/image-20181217171353673.png?raw=true)
 
 ###  数据类型
 
