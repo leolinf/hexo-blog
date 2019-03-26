@@ -1,13 +1,16 @@
+---
 title: docker 底层实现
 date: 2019-02-26 18:14:47
 tags: docker
 categories: 技术
 comment: true
+---
+
 
 ### Docker 的底层实现和 Docker 虚拟化技术中的核心技术
 Linux 容器不是模拟一个完整的操作系统，而是对进程进行隔离。或者说，在正常进程的外面套了一个保护层。对于容器里面的进程来说，它接触到的各种资源都是虚拟的，从而实现与底层系统的隔离。由于容器是进程级别的，相比虚拟机有很多优势。容器里面的应用，直接就是底层系统的一个进程，而不是虚拟机内部的进程。容器只占用需要的资源，不占用那些没有用到的资源；虚拟机由于是完整的操作系统，不可避免要占用所有资源。另外，多个容器可以共享资源，虚拟机都是独享资源。容器只要包含用到的组件即可，而虚拟机是整个操作系统的打包，所以容器文件比虚拟机文件要小很多。
 
-![](images/docker_vs_vm.png)
+![](https://github.com/leolinf/hexo-blog/blob/master/source/_posts/images/docker_vs_vm.png?raw=true)
 
 #### Namespaces
 命名空间 (namespaces) 是 Linux 为我们提供的用于分离进程树、网络接口、挂载点以及进程间通信等资源的方法。在日常使用 Linux 时，我们并没有运行多个完全分离的服务器的需要，但是如果我们在服务器上启动了多个服务，这些服务其实会相互影响的，每一个服务都能看到其他服务的进程，也可以访问宿主机器上的任意文件，这是很多时候我们都不愿意看到的，我们更希望运行在同一台机器上的不同服务能做到完全隔离，就像运行在多台不同的机器上一样。
@@ -63,7 +66,7 @@ UnionFS 其实是一种为 Linux 操作系统设计的用于把多个文件系�
 
 AUFS 作为联合文件系统，它能够将不同文件夹中的层联合（Union）到了同一个文件夹中，这些文件夹在 AUFS 中称作分支，整个『联合』的过程被称为联合挂载（Union Mount）：
 
-![](images/aufs.png)
+![](https://github.com/leolinf/hexo-blog/blob/master/source/_posts/images/aufs.png?raw=true))
 
 
 #### 存储驱动
@@ -80,16 +83,16 @@ CMD python /app/app.py
 ```
 容器中的每一层都只对当前容器进行了非常小的修改，上述的 Dockerfile 文件会构建一个拥有四层 layer 的镜像：
 
-![](images/storage_layer.png)
+![](https://github.com/leolinf/hexo-blog/blob/master/source/_posts/images/storage_layer.png?raw=true))
 
 当镜像被 docker run 命令创建时就会在镜像的最上层添加一个可写的层，也就是容器层，所有对于运行时容器的修改其实都是对这个容器读写层的修改。
 
 容器和镜像的区别就在于，所有的镜像都是只读的，而每一个容器其实等于镜像加上一个可读写的层，也就是同一个镜像可以对应多个容器。
 
-![](images/image_container.png)
+![](https://github.com/leolinf/hexo-blog/blob/master/source/_posts/images/image_container.png?raw=true))
 
 
-![](images/layer.png)
+![](https://github.com/leolinf/hexo-blog/blob/master/source/_posts/images/layer.png?raw=true))
 
 上面的这张图片非常好的展示了组装的过程，每一个镜像层都是建立在另一个镜像层之上的，同时所有的镜像层都是只读的，只有每个容器最顶层的容器层才可以被用户直接读写，所有的容器都建立在一些底层服务（Kernel）上，包括命名空间、控制组、rootfs 等等，这种容器的组装方式提供了非常大的灵活性，只读的镜像层通过共享也能够减少磁盘的占用。
 

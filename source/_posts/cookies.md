@@ -1,8 +1,11 @@
+---
 title: cookies 深入理解
 date: 2019-01-21 11:14:47
 tags: base
 categories: 技术
 comment: true
+---
+
 
 ### cookies起源
 
@@ -28,7 +31,9 @@ Cookie曾一度用于客户端数据的存储，因当时并没有其它合适�
 
 当服务器收到HTTP请求时，服务器可以在响应头里面添加一个`Set-Cookie`选项。浏览器收到响应后通常会保存下Cookie，之后对该服务器每一次请求中都通过`Cookie`请求头部将Cookie信息发送给服务器。另外，Cookie的过期时间、域、路径、有效期、适用站点都可以根据需要来指定。
 
-```Set-Cookie: value [ ;expires=date][ ;domain=domain][ ;path=path][ ;secure][ ;httponly][;samesite=strict]```
+```
+Set-Cookie: value [ ;expires=date][ ;domain=domain][ ;path=path][ ;secure][ ;httponly][;samesite=strict]
+```
 
 消息头的第一部分，value部分，通常是一个name=value格式的字符串。事实上，原始手册指示这是应该使用的格式，但是浏览器对cookie的所有值并不会按此格式校验。实际上，你可以指定一个不包含等号的字符串并且它同样会被存储。然而，通常性的使用方式是以name=value的格式（并且多数的接口只支持该格式）来指定cookie的值。
 
@@ -37,11 +42,15 @@ Cookie曾一度用于客户端数据的存储，因当时并没有其它合适�
 
 当一个cookie存在，并且可选条件允许的话，该cookie的值会在接下来的每个请求中被发送至服务器。cookie的值被存储在名为Cookie的HTTP消息头中，并且只包含了cookie的值，其它的选项全部被去除。
 
-```Cookie : name=value```
+```
+Cookie : name=value
+```
 
 通过Set-Cookie指定的选项只是应用于浏览器端，一旦选项被设置后便不会被服务器重新取回。cookie的值与Set-Cookie中指定的值是完全一样的字符串；对于这些值不会有更近一步的解析或转码操作。如果在指定的请求中有多个cookies，那么它们会被分号和空格分开，例如：
 
-```Cookie:name=value1 ; name=value2 ; name1=value1```
+```
+Cookie:name=value1 ; name=value2 ; name1=value1
+```
 
 **cookie**中**value**的大小以及数量的限制，详情查看<http://browsercookielimits.squawky.net>
 
@@ -59,7 +68,9 @@ Cookie曾一度用于客户端数据的存储，因当时并没有其它合适�
 
 与上面相反的就是，持久性Cookie可以指定一个特定的过期时间（`Expires`）或有效期（`Max-Age`）。当Cookie的过期时间被设定时，设定的日期和时间只与客户端相关，而不是服务端。
 
-**同时设定expires 和 max-age**所有支持 `max-age` 的浏览器会忽略 `expires` 的值，只有 IE 另外，IE 会忽略 `max-age` 只支持 `expires`；**如果我只设了 max-age**，除了 IE 之外的所有浏览器会正确的使用它。在 IE 浏览器中，这个 Cookie 将会作为一个 Session Cookie（当你关闭浏览器时它会被删除）；**如果我只设了 expires**，所有浏览器会正确使用它来保存 Cookie，只需要记得像上边示例那样设置它的 GMT 时间就行了。
+**同时设定expires 和 max-age**所有支持 `max-age` 的浏览器会忽略 `expires` 的值，只有 IE 另外，IE 会忽略 `max-age` 只支持 `expires`；
+**如果我只设了 max-age**，除了 IE 之外的所有浏览器会正确的使用它。在 IE 浏览器中，这个 Cookie 将会作为一个 Session Cookie（当你关闭浏览器时它会被删除）；
+**如果我只设了 expires**，所有浏览器会正确使用它来保存 Cookie，只需要记得像上边示例那样设置它的 GMT 时间就行了。
 
 如果maxAge为负数，则表示该Cookie仅在本浏览器窗口以及本窗口打开的子窗口内有效，关闭窗口后该Cookie即失效。maxAge为负数的Cookie，为临时性Cookie，不会被持久化，不会被写到Cookie文件中。Cookie信息保存在浏览器内存中，因此关闭浏览器该Cookie就消失了。Cookie默认的maxAge值为-1。
 
@@ -73,7 +84,9 @@ Cookie曾一度用于客户端数据的存储，因当时并没有其它合适�
 
 如果指定了`Domain`，则一般包含子域名。浏览器会对domain的值与请求所要发送至的域名，做一个尾部比较（即从字符串的尾部开始比较），并且在匹配后发送一个Cookie消息头。 domain设置的值必须是发送Set-Cookie消息头的域名
 
-例如，如果设置 `Domain=laowang.com`，则Cookie也包含在子域名中（如`developer.laowang.com`,`test.developer.laowang.com`）
+总结：cookie 如果不指定domain，只能当前域名下访问。子域名上可以指定domain 到当前域名或者当前域名的父域名。当前域名可以加载出当前域名和对应的父域名的cookie
+
+例如：如果设置`Domain=laowang.com`，则Cookie也包含在子域名中（如`developer.laowang.com`,`test.developer.laowang.com`）
 
 #### Path选项
 
